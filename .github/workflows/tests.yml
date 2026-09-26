@@ -12,6 +12,24 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: publishing_db
+          POSTGRES_USER: publishing_user
+          POSTGRES_PASSWORD: publishing_password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U publishing_user -d publishing_db"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql+psycopg://publishing_user:publishing_password@localhost:5432/publishing_db
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -26,5 +44,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests
+      - name: Run database migrations
+        run: alembic upgrade head
+
+      - name: Show current migration
+        run: alembic current
+
+      - name: Run API tests
         run: python -m pytest -v
