@@ -112,3 +112,35 @@ persistent Docker volume
 ## Purpose
 
 This project demonstrates practical experience with REST API development, ORM-based persistence, containerization, relational databases and automated testing.
+
+## Development workflow
+
+The application can be developed locally or run entirely with Docker Compose.
+
+Typical development workflow:
+
+```text
+code change
+    |
+    v
+pytest
+    |
+    v
+Docker build
+    |
+    v
+Docker Compose
+    |
+    v
+Git commit
+```
+
+Useful commands:
+
+```bash
+python -m pytest -v
+docker compose up --build -d
+docker compose ps
+docker compose logs api
+docker compose down
+```
