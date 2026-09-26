@@ -2,17 +2,14 @@
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app.database import Base, engine, get_db
+from app.database import get_db
 from app.models import Article
 from app.schemas import ArticleCreate, ArticleRead, ArticleUpdate
 
 
-Base.metadata.create_all(bind=engine)
-
-
 app = FastAPI(
     title="Publishing Workflow API",
-    version="0.4.0"
+    version="0.5.0"
 )
 
 
